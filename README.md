@@ -5,6 +5,8 @@ GitHub Action to generate matrix from GitHub's repository releases via GitHub AP
 
 ## Usage
 
+You can now consume the action by referencing the `v1` branch
+
 ```yaml
 on:
   push:
@@ -38,3 +40,34 @@ jobs:
 **Example screenshot**
 
 ![Screenshot 2024-04-30 at 6 05 29 in the evening](https://github.com/actions-matrix/github-release-matrix-action/assets/4363857/125124b0-f870-4f09-8995-4d84359a2190)
+
+## Inputs
+
+- `repository`: Repository owner/name (e.g. "octocat/Hello-World")'
+- `release`: Release filter (e.g. "latest", "*"). (Default: "*")'
+- `prerelease`: Include prerelease releases. (Default: false)'
+- `prefix`: Remove version prefix from release tag name. (Default: false)'
+- `limit`: Limit the number of releases to fetch. (Default: 3)'
+
+## Outputs
+
+- `matrix`: JSON string with the matrix of releases.
+
+**Example**
+
+```json
+{
+  "releases": [
+    {
+      "tag_name": "v1.16.2",
+      "target_commitish": "c6e4c2d4dc3b0d57791881b087c026e2f75a87cb",
+      "author": "hc-github-team-es-release-engineering",
+      "created_at": "2024-04-22T20:25:54Z",
+      "published_at": "2024-04-23T21:51:34Z"
+    }
+  ]
+}
+```
+
+## License
+Licensed under the [MIT License](LICENSE).
