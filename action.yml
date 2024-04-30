@@ -13,10 +13,6 @@ inputs:
     description: 'Release filter (e.g. "latest", "*"). (Default: "*")'
     default: '*'
     required: false
-  draft:
-    description: 'Include draft releases. (Default: false)'
-    default: 'false'
-    required: false
   prerelease:
     description: 'Include prerelease releases. (Default: false)'
     default: 'false'
@@ -40,4 +36,4 @@ runs:
   steps:
     - id: releases
       shell: bash
-      run: ${{ github.action_path }}/action.sh "${{ inputs.repository }}" "${{ inputs.release }}" "${{ inputs.draft }}" "${{ inputs.prerelease }}" "${{ inputs.prefix }}" "${{ inputs.limit }}"
+      run: ${{ github.action_path }}/action.sh "${{ inputs.repository }}" "${{ inputs.release }}" "${{ inputs.prerelease }}" "${{ inputs.prefix }}" "${{ inputs.limit }}"

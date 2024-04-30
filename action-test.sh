@@ -8,4 +8,4 @@ export GITHUB_OUTPUT="${ACTION_DIR}/GITHUB_OUTPUT"
 mkdir -p "$RUNNER_TEMP"
 touch "$GITHUB_OUTPUT"
 
-exec ./action.sh "cli/cli" "${@}"
+exec ./action.sh "prometheus/alertmanager" "${@}"

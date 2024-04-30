@@ -5,10 +5,9 @@ set -e
 # Action input variables
 INPUT_REPOSITORY=${1}
 INPUT_RELEASE=${2:-"*"}
-INPUT_DRAFT=${3:-"false"}
-INPUT_PRERELEASE=${4:-"false"}
-INPUT_PREFIX=${5:-"false"}
-INPUT_LIMIT=${6:-"3"}
+INPUT_PRERELEASE=${3:-"false"}
+INPUT_PREFIX=${4:-"false"}
+INPUT_LIMIT=${5:-"3"}
 
 if [[ -z "${INPUT_REPOSITORY}" ]]; then
     echo "::error::Missing required 'repository' input"
@@ -31,7 +30,7 @@ gh api \
     -H "Accept: application/vnd.github+json" \
     -H "X-GitHub-Api-Version: ${X_GITHUB_API_VERSION}" \
     "$X_GITHUB_RELEASE_API_URL" |
-        jq --raw-output "if \"$INPUT_RELEASE\" == \"*\" then map(select(.draft == $INPUT_DRAFT and .prerelease == $INPUT_PRERELEASE)) else . end" |
+        jq --raw-output "if \"$INPUT_RELEASE\" == \"*\" then map(select(.draft == false and .prerelease == $INPUT_PRERELEASE)) else . end" |
         jq --raw-output "$X_JQ_RELEASE_QUERY" |
         jq --raw-output "if ($INPUT_PREFIX) then .tag_name |= ltrimstr(\"v\") else . end" |
         jq --raw-output --slurp "." |
