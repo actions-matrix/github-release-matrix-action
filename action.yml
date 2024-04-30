@@ -1,0 +1,50 @@
+name: github-release-matrix-action
+description: GitHub Action to generate matrix from GitHub's repository releases via GitHub API.
+
+branding:
+  icon: 'tag'
+  color: 'blue'
+
+inputs:
+  repository:
+    description: 'Repository owner/name (e.g. "octocat/Hello-World")'
+    required: true
+  release:
+    description: 'Release filter (e.g. "latest", "*"). (Default: "*")'
+    default: '*'
+    required: false
+  draft:
+    description: 'Include draft releases. (Default: false)'
+    default: 'false'
+    required: false
+  prerelease:
+    description: 'Include prerelease releases. (Default: false)'
+    default: 'false'
+    required: false
+  prefix:
+    description: 'Remove version prefix from release tag name. (Default: false)'
+    default: 'false'
+    required: false
+  limit:
+    description: 'Limit the number of releases to fetch. (Default: 3)'
+    default: '3'
+    required: false
+
+outputs:
+  matrix:
+    description: 'Matrix of GitHub releases'
+    value: ${{ steps.releases.outputs.matrix }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: releases
+      shell: bash
+      run: |
+        ${{ github.action_path }}/action.sh \
+          ${{ inputs.repository }} \
+          ${{ inputs.release }} \
+          ${{ inputs.draft }} \
+          ${{ inputs.prerelease }} \
+          ${{ inputs.prefix }} \
+          ${{ inputs.limit }}
