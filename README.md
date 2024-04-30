@@ -35,3 +35,6 @@ jobs:
           echo "target_commitish=${{ matrix.releases.target_commitish }}"
           echo "author=${{ matrix.releases.author }}"
 ```
+**Example screenshot**
+
+![Screenshot 2024-04-30 at 6 05 29 in the evening](https://github.com/actions-matrix/github-release-matrix-action/assets/4363857/125124b0-f870-4f09-8995-4d84359a2190)
