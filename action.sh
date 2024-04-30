@@ -31,10 +31,10 @@ gh api \
     -H "Accept: application/vnd.github+json" \
     -H "X-GitHub-Api-Version: ${X_GITHUB_API_VERSION}" \
     "$X_GITHUB_RELEASE_API_URL" |
-        jq --raw-output "map(select(.draft == $INPUT_DRAFT and .prerelease == $INPUT_PRERELEASE))" |
+        jq --raw-output "if \"$INPUT_RELEASE\" == \"*\" then map(select(.draft == $INPUT_DRAFT and .prerelease == $INPUT_PRERELEASE)) else . end" |
         jq --raw-output "$X_JQ_RELEASE_QUERY" |
-        jq --raw-output --slurp "." |
         jq --raw-output "if ($INPUT_PREFIX) then .tag_name |= ltrimstr(\"v\") else . end" |
+        jq --raw-output --slurp "." |
         jq --raw-output "if $INPUT_LIMIT < 0 then . else .[:$INPUT_LIMIT] end" |
         jq --raw-output "tostring" \
     > "$RUNNER_TEMP/$INPUT_REPOSITORY/releases.json"
