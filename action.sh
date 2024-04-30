@@ -34,7 +34,7 @@ gh api \
         jq --raw-output "$X_JQ_RELEASE_QUERY" |
         jq --raw-output "if ($INPUT_PREFIX) then .tag_name |= ltrimstr(\"v\") else . end" |
         jq --raw-output --slurp "map(select(.draft == $INPUT_DRAFT and .prerelease == $INPUT_PRERELEASE))" |
-        jq --raw-output "if $INPUT_LIMIT < 0 then .[:$INPUT_LIMIT] else . end" |
+        jq --raw-output "if $INPUT_LIMIT < 0 then . else .[:$INPUT_LIMIT] end" |
         jq --raw-output "tostring" \
     > "$RUNNER_TEMP/$INPUT_REPOSITORY/releases.json"
 
