@@ -10,6 +10,11 @@ INPUT_PRERELEASE=${4:-"false"}
 INPUT_PREFIX=${5:-"false"}
 INPUT_LIMIT=${6:-"3"}
 
+if [[ -z "${INPUT_REPOSITORY}" ]]; then
+    echo "::error::Missing required 'repository' input"
+    exit 1
+fi
+
 # Private variables
 X_GITHUB_API_VERSION="2022-11-28"
 X_GITHUB_RELEASE_API_URL="/repos/${INPUT_REPOSITORY}/releases"
