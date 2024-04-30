@@ -25,6 +25,13 @@ else
     X_JQ_RELEASE_QUERY=".[] | ${X_JQ_RELEASE_QUERY}"
 fi
 
+echo "Querying GitHub releases for \"$INPUT_REPOSITORY\" repository..."
+echo " - Repository: $INPUT_REPOSITORY"
+echo " - Selector: $INPUT_RELEASE"
+echo " - Include prerelease: $INPUT_PRERELEASE"
+echo " - Trim prefix: $INPUT_PREFIX"
+echo " - Limit: $INPUT_LIMIT"
+
 mkdir -p "$RUNNER_TEMP/$INPUT_REPOSITORY"
 gh api \
     -H "Accept: application/vnd.github+json" \
@@ -38,4 +45,6 @@ gh api \
         jq --raw-output "tostring" \
     > "$RUNNER_TEMP/$INPUT_REPOSITORY/releases.json"
 
+echo "Configure output variables:"
+echo "------------------------------------------------------------------------------"
 echo "matrix={\"releases\": $(cat "$RUNNER_TEMP/$INPUT_REPOSITORY/releases.json")}" | tee -a "$GITHUB_OUTPUT"
