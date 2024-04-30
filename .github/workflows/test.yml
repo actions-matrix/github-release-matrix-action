@@ -26,6 +26,6 @@ jobs:
       matrix: ${{ fromJson(needs.generate.outputs.matrix) }}
     steps:
       - run: |
-          echo "tag_name=${{ matrix.tag_name }}"
-          echo "target_commitish=${{ matrix.target_commitish }}"
-          echo "author=${{ matrix.author }}"
+          echo "tag_name=${{ matrix.releases.tag_name }}"
+          echo "target_commitish=${{ matrix.releases.target_commitish }}"
+          echo "author=${{ matrix.releases.author }}"

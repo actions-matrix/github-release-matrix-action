@@ -38,4 +38,4 @@ gh api \
         jq --raw-output "tostring" \
     > "$RUNNER_TEMP/$INPUT_REPOSITORY/releases.json"
 
-echo "matrix=$(cat "$RUNNER_TEMP/$INPUT_REPOSITORY/releases.json" | jq 'tostring')" >> "$GITHUB_OUTPUT"
+echo "matrix={\"releases\": $(cat "$RUNNER_TEMP/$INPUT_REPOSITORY/releases.json" | jq 'tostring')}" >> "$GITHUB_OUTPUT"
