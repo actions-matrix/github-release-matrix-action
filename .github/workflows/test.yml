@@ -16,6 +16,8 @@ jobs:
         uses: ./
         with:
           repository: "cli/cli"
+        env:
+          GH_TOKEN: ${{ github.token }}
     outputs:
       matrix: ${{ steps.releases.outputs.matrix }}
 
