@@ -40,11 +40,4 @@ runs:
   steps:
     - id: releases
       shell: bash
-      run: |
-        ${{ github.action_path }}/action.sh \
-          ${{ inputs.repository }} \
-          ${{ inputs.release }} \
-          ${{ inputs.draft }} \
-          ${{ inputs.prerelease }} \
-          ${{ inputs.prefix }} \
-          ${{ inputs.limit }}
+      run: ${{ github.action_path }}/action.sh "${{ inputs.repository }}" "${{ inputs.release }}" "${{ inputs.draft }}" "${{ inputs.prerelease }}" "${{ inputs.prefix }}" "${{ inputs.limit }}"
