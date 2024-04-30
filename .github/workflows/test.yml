@@ -15,7 +15,7 @@ jobs:
       - id: releases
         uses: ./
         with:
-          repository: "cli/cli"
+          repository: "prometheus/alertmanager"
         env:
           GH_TOKEN: ${{ github.token }}
     outputs:
