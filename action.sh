@@ -18,7 +18,7 @@ fi
 # Private variables
 X_GITHUB_API_VERSION="2022-11-28"
 X_GITHUB_RELEASE_API_URL="/repos/${INPUT_REPOSITORY}/releases"
-X_JQ_RELEASE_QUERY="{tag_name, target_commitish, draft, prerelease, created_at, published_at, author: .author.login}"
+X_JQ_RELEASE_QUERY="{tag_name, target_commitish, author: .author.login, created_at, published_at}"
 
 if [[ "$INPUT_RELEASE" == "latest" ]]; then
     X_GITHUB_RELEASE_API_URL="${X_GITHUB_RELEASE_API_URL}/latest"
