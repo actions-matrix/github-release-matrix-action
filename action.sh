@@ -33,6 +33,7 @@ echo " - Trim prefix: $INPUT_PREFIX"
 echo " - Limit: $INPUT_LIMIT"
 
 mkdir -p "$RUNNER_TEMP/$INPUT_REPOSITORY"
+GITHUB_RELEASE_MATRIX_ACTION_RELEASE_FILE="$RUNNER_TEMP/$INPUT_REPOSITORY/releases.json"
 gh api \
     -H "Accept: application/vnd.github+json" \
     -H "X-GitHub-Api-Version: ${X_GITHUB_API_VERSION}" \
@@ -43,8 +44,14 @@ gh api \
         jq --raw-output --slurp "." |
         jq --raw-output "if $INPUT_LIMIT < 0 then . else .[:$INPUT_LIMIT] end" |
         jq --raw-output "tostring" \
-    > "$RUNNER_TEMP/$INPUT_REPOSITORY/releases.json"
+    > "$GITHUB_RELEASE_MATRIX_ACTION_RELEASE_FILE"
 
+echo ""
+echo "Exporting environment variables:"
+echo "GITHUB_RELEASE_MATRIX_ACTION_RELEASE_FILE=${GITHUB_RELEASE_MATRIX_ACTION_RELEASE_FILE}" | tee -a "${GITHUB_ENV}"
+
+echo ""
 echo "Configure output variables:"
 echo "------------------------------------------------------------------------------"
-echo "matrix={\"releases\": $(cat "$RUNNER_TEMP/$INPUT_REPOSITORY/releases.json")}" | tee -a "$GITHUB_OUTPUT"
+echo "matrix={\"releases\": $(cat "$GITHUB_RELEASE_MATRIX_ACTION_RELEASE_FILE")}" | tee -a "$GITHUB_OUTPUT"
+echo "------------------------------------------------------------------------------"
