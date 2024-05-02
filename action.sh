@@ -2,6 +2,15 @@
 #!/bin/bash
 set -e
 
+echo ""
+echo "!!! DISCLAIMER !!!"
+echo "------------------------------------------------------------------------------"
+echo "This action uses the GitHub API to fetch release information."
+echo "To avoid unnecessary and straining the GitHub REST API servers,"
+echo "Please consider limit the number of uses of this action."
+echo "------------------------------------------------------------------------------"
+echo ""
+
 # Action input variables
 INPUT_REPOSITORY=${1}
 INPUT_RELEASE=${2:-"*"}
