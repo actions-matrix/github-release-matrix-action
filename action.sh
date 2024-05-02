@@ -35,7 +35,7 @@ echo " - Limit: $INPUT_LIMIT"
 mkdir -p "$RUNNER_TEMP/$INPUT_REPOSITORY"
 GITHUB_RELEASE_MATRIX_ACTION_RAW_RELEASE_FILE="$RUNNER_TEMP/$INPUT_REPOSITORY/releases.json"
 GITHUB_RELEASE_MATRIX_ACTION_RELEASE_FILE="$RUNNER_TEMP/$INPUT_REPOSITORY/releases-filtered.json"
-gh api \
+gh api --paginate \
 	-H "Accept: application/vnd.github+json" \
 	-H "X-GitHub-Api-Version: ${X_GITHUB_API_VERSION}" \
 	"$X_GITHUB_RELEASE_API_URL" \
