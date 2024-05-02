@@ -33,21 +33,26 @@ echo " - Trim prefix: $INPUT_PREFIX"
 echo " - Limit: $INPUT_LIMIT"
 
 mkdir -p "$RUNNER_TEMP/$INPUT_REPOSITORY"
-GITHUB_RELEASE_MATRIX_ACTION_RELEASE_FILE="$RUNNER_TEMP/$INPUT_REPOSITORY/releases.json"
+GITHUB_RELEASE_MATRIX_ACTION_RAW_RELEASE_FILE="$RUNNER_TEMP/$INPUT_REPOSITORY/releases.json"
+GITHUB_RELEASE_MATRIX_ACTION_RELEASE_FILE="$RUNNER_TEMP/$INPUT_REPOSITORY/releases-filtered.json"
 gh api \
     -H "Accept: application/vnd.github+json" \
     -H "X-GitHub-Api-Version: ${X_GITHUB_API_VERSION}" \
-    "$X_GITHUB_RELEASE_API_URL" |
-        jq --raw-output "if \"$INPUT_RELEASE\" == \"*\" then map(select(.draft == false and .prerelease == $INPUT_PRERELEASE)) else . end" |
-        jq --raw-output "$X_JQ_RELEASE_QUERY" |
-        jq --raw-output "if ($INPUT_PREFIX) then .tag_name |= ltrimstr(\"v\") else . end" |
-        jq --raw-output --slurp "." |
-        jq --raw-output "if $INPUT_LIMIT < 0 then . else .[:$INPUT_LIMIT] end" |
-        jq --raw-output "tostring" \
+    "$X_GITHUB_RELEASE_API_URL" \
+    > "$GITHUB_RELEASE_MATRIX_ACTION_RAW_RELEASE_FILE"
+
+cat "$GITHUB_RELEASE_MATRIX_ACTION_RAW_RELEASE_FILE" |
+    jq --raw-output "if \"$INPUT_RELEASE\" == \"*\" then map(select(.draft == false and .prerelease == $INPUT_PRERELEASE)) else . end" |
+    jq --raw-output "$X_JQ_RELEASE_QUERY" |
+    jq --raw-output "if ($INPUT_PREFIX) then .tag_name |= ltrimstr(\"v\") else . end" |
+    jq --raw-output --slurp "." |
+    jq --raw-output "if $INPUT_LIMIT < 0 then . else .[:$INPUT_LIMIT] end" |
+    jq --raw-output "tostring" \
     > "$GITHUB_RELEASE_MATRIX_ACTION_RELEASE_FILE"
 
 echo ""
 echo "Exporting environment variables:"
+echo "GITHUB_RELEASE_MATRIX_ACTION_RAW_RELEASE_FILE=${GITHUB_RELEASE_MATRIX_ACTION_RAW_RELEASE_FILE}" | tee -a "${GITHUB_ENV}"
 echo "GITHUB_RELEASE_MATRIX_ACTION_RELEASE_FILE=${GITHUB_RELEASE_MATRIX_ACTION_RELEASE_FILE}" | tee -a "${GITHUB_ENV}"
 
 echo ""
