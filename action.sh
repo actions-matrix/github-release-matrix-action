@@ -42,11 +42,11 @@ gh api --paginate \
 	> "$GITHUB_RELEASE_MATRIX_ACTION_RAW_RELEASE_FILE"
 
 cat "$GITHUB_RELEASE_MATRIX_ACTION_RAW_RELEASE_FILE" |
-	jq --raw-output "if \"$INPUT_RELEASE\" == \"*\" then map(select(.draft == false and .prerelease == $INPUT_PRERELEASE)) else . end" |
-	jq --raw-output "$X_JQ_RELEASE_QUERY" |
-	jq --raw-output "if ($INPUT_PREFIX) then .tag_name |= ltrimstr(\"v\") else . end" |
-	jq --raw-output --slurp "." |
-	jq --raw-output "if $INPUT_LIMIT < 0 then . else .[:$INPUT_LIMIT] end" |
+	jq "if \"$INPUT_RELEASE\" == \"*\" then map(select(.draft == false and .prerelease == $INPUT_PRERELEASE)) else . end" |
+	jq "$X_JQ_RELEASE_QUERY" |
+	jq "if ($INPUT_PREFIX) then .tag_name |= ltrimstr(\"v\") else . end" |
+	jq --slurp "." |
+	jq "if $INPUT_LIMIT < 0 then . else .[:$INPUT_LIMIT] end" |
 	jq --raw-output "tostring" \
 	> "$GITHUB_RELEASE_MATRIX_ACTION_RELEASE_FILE"
 
